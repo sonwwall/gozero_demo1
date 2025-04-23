@@ -171,7 +171,8 @@ func (x *UserCreateRequest) GetPassword() string {
 
 type UserCreateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Err           string                 `protobuf:"bytes,1,opt,name=err,proto3" json:"err,omitempty"`
+	UserId        uint32                 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Err           string                 `protobuf:"bytes,2,opt,name=err,proto3" json:"err,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -206,6 +207,13 @@ func (*UserCreateResponse) Descriptor() ([]byte, []int) {
 	return file_user_proto_rawDescGZIP(), []int{3}
 }
 
+func (x *UserCreateResponse) GetUserId() uint32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
 func (x *UserCreateResponse) GetErr() string {
 	if x != nil {
 		return x.Err
@@ -226,9 +234,10 @@ const file_user_proto_rawDesc = "" +
 	"\busername\x18\x02 \x01(\tR\busername\"K\n" +
 	"\x11UserCreateRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"&\n" +
-	"\x12UserCreateResponse\x12\x10\n" +
-	"\x03err\x18\x01 \x01(\tR\x03err2E\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"?\n" +
+	"\x12UserCreateResponse\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\rR\x06userId\x12\x10\n" +
+	"\x03err\x18\x02 \x01(\tR\x03err2E\n" +
 	"\bUserInfo\x129\n" +
 	"\bUserInfo\x12\x15.user.UserInfoRequest\x1a\x16.user.UserInfoResponse2M\n" +
 	"\n" +

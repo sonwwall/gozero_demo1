@@ -3,7 +3,7 @@ package useractionlogic
 import (
 	"context"
 	"fmt"
-
+	"gozero_demo1/model_study/user_gorm/models"
 	"gozero_demo1/rpc_study/user_group/rpc/internal/svc"
 	"gozero_demo1/rpc_study/user_group/rpc/types/user"
 
@@ -24,9 +24,30 @@ func NewUserCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserCr
 	}
 }
 
-func (l *UserCreateLogic) UserCreate(in *user.UserCreateRequest) (*user.UserCreateResponse, error) {
+func (l *UserCreateLogic) UserCreate(in *user.UserCreateRequest) (pd *user.UserCreateResponse, err error) {
 	// todo: add your logic here and delete this line
-	fmt.Println("用户已创建")
 
-	return &user.UserCreateResponse{}, nil
+	pd = new(user.UserCreateResponse)
+	var model models.UserModel
+	err = l.svcCtx.DB.Take(&model, "username = ?", in.Username).Error
+	if err == nil {
+		pd.Err = "该用户名已存在"
+		return
+	}
+	model = models.UserModel{
+		Username: in.Username,
+		Password: in.Password,
+	}
+	err = l.svcCtx.DB.Create(&model).Error
+	if err != nil {
+		logx.Error(err)
+		pd.Err = err.Error()
+		err = nil
+		return
+	}
+	pd.UserId = uint32(model.ID)
+	fmt.Printf("Database connection: %+v\n", l.svcCtx.DB)
+
+	return
+
 }
