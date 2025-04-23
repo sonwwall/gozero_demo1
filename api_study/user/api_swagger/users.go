@@ -38,5 +38,3 @@ func JwtUnauthorizedResult(w http.ResponseWriter, r *http.Request, err error) {
 	fmt.Println(err) // 具体的错误，没带token，token过期？伪造token？
 	httpx.WriteJson(w, http.StatusOK, response.Body{10087, 0, err.Error()})
 }
-
-//goctl api plugin -plugin goctl-swagger="swagger -filename app.json -host localhost:8888 -basepath /" -api user.api -dir ./doc
