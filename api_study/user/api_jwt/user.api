@@ -1,22 +1,28 @@
 type LoginRequest {
-    Username string `json:"username"`
-    Password string `json:"password"`
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 type UserInfoResponse {
-    UserId   uint   `json:"user_id"`
-    Username string `json:"username"`
+	UserId   uint   `json:"user_id"`
+	Username string `json:"username"`
 }
 
 @server (
-    prefix: /api/users
+	prefix: /api/users
 )
 service users {
-    @handler login
-    post /api/users/login (LoginRequest) returns (string)
-
-    @handler userInfo
-    get /api/users/info returns (UserInfoResponse)
+	@handler login
+	post /login (LoginRequest) returns (string)
 }
 
-    //goctl api go -api user.api -dir .
+@server (
+	prefix: /api/users
+	jwt:    Auth
+)
+service users {
+	@handler userInfo
+	get /info returns (UserInfoResponse)
+}
+
+//goctl api go -api user.api -dir .
